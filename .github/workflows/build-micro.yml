@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest # 已修改：使用 Windows 虚拟机来编译 Windows 版本的 sfx
+    runs-on: windows-latest # 使用 Windows 虚拟机来编译 Windows 版本的 sfx
     
     steps:
       - name: Checkout static-php-cli
@@ -21,7 +21,11 @@ jobs:
           extensions: mbstring, curl
           tools: composer
 
-      # 在 Windows 环境下，spc doctor 会自动配置好 Visual Studio 编译环境和
+      # ✨ 新增步骤：安装 static-php-cli 自身的 Composer 依赖
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # 在 Windows 环境下，spc doctor 会自动配置好 Visual Studio 编译环境
       - name: Run SPC Doctor (Install Windows Build Toolchain)
         run: .\bin\spc doctor --auto-fix
 
