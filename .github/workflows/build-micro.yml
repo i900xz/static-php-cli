@@ -26,9 +26,11 @@ jobs:
       - name: Run SPC Doctor (Install Build Dependencies)
         run: ./bin/spc doctor --auto-fix
 
-      # 修改了这里：移除不正确的扩展名，让 spc 智能自动下载编译所需的全部源码（包含 php-src 和所需类库）
+      # 修改了这里：使用 -e 参数把你要编译的扩展传给它，让它精确计算并下载对应的源码
       - name: Fetch Sources
-        run: ./bin/spc download --with-php=8.4
+        run: |
+          ./bin/spc download --with-php=8.4 -e \
+          "bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,readline,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib"
 
       - name: Build micro.sfx
         run: |
