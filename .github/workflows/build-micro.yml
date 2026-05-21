@@ -17,11 +17,15 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4' # 已修改：升级运行环境到 PHP 8.4
+          php-version: '8.4'
           extensions: mbstring, curl
 
       - name: Install Composer Dependencies
         run: composer install --no-dev --classmap-authoritative
+
+      # 新增步骤：让 spc 的 doctor 自动安装 pkg-config 和其他缺失的系统依赖
+      - name: Run SPC Doctor (Install Build Dependencies)
+        run: ./bin/spc doctor --auto-fix
 
       - name: Fetch Sources
         run: |
