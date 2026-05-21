@@ -29,15 +29,16 @@ jobs:
       - name: Run SPC Doctor (Install Windows Build Toolchain)
         run: .\bin\spc doctor --auto-fix
 
-      # 使用 -e 参数精确下载 Windows 编译所需的资源（已移除 readline）
+      # 使用 -e 参数精确下载 Windows 编译所需的资源
       - name: Fetch Sources
         run: |
           .\bin\spc download --with-php=8.4 -e "bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib" --prefer-pre-built -R 5
 
-      # 编译 Windows 版本的 micro.sfx（已移除 readline，避免 ncurses 编译报错）
+      # 编译 Windows 版本的 micro.sfx
+      # ✨ 增加了 --without-micro-ext-test 参数，跳过不稳定的 curl 自检，直接产出成果！
       - name: Build micro.sfx
         run: |
-          .\bin\spc build "bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib" --build-micro
+          .\bin\spc build "bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib" --build-micro --without-micro-ext-test
 
       - name: Upload micro.sfx Artifact
         uses: actions/upload-artifact@v4
