@@ -23,14 +23,12 @@ jobs:
       - name: Install Composer Dependencies
         run: composer install --no-dev --classmap-authoritative
 
-      # 新增步骤：让 spc 的 doctor 自动安装 pkg-config 和其他缺失的系统依赖
       - name: Run SPC Doctor (Install Build Dependencies)
         run: ./bin/spc doctor --auto-fix
 
+      # 修改了这里：移除不正确的扩展名，让 spc 智能自动下载编译所需的全部源码（包含 php-src 和所需类库）
       - name: Fetch Sources
-        run: |
-          ./bin/spc download --with-php=8.4 \
-          bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,readline,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib
+        run: ./bin/spc download --with-php=8.4
 
       - name: Build micro.sfx
         run: |
@@ -38,7 +36,6 @@ jobs:
           bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,readline,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib \
           --build-micro
 
-      # 修正了这里：由 actions/artifacts 变更为 actions/upload-artifact
       - name: Upload micro.sfx Artifact
         uses: actions/upload-artifact@v4
         with:
