@@ -30,15 +30,16 @@ jobs:
         run: .\bin\spc doctor --auto-fix
 
       # 使用 -e 参数精确下载 Windows 编译所需的资源
+      # ✨ 核心修改：在下载和编译列表中，将 curl, openssl, mbstring 绑定加入
       - name: Fetch Sources
         run: |
-          .\bin\spc download --with-php=8.4 -e "bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib" --prefer-pre-built -R 5
+          .\bin\spc download --with-php=8.4 -e "bcmath,calendar,curl,openssl,mbstring,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib" --prefer-pre-built -R 5
 
       # 编译 Windows 版本的 micro.sfx
-      # ✨ 增加了 --without-micro-ext-test 参数，跳过不稳定的 curl 自检，直接产出成果！
+      # ✨ 核心修改：确保这里的扩展列表与上面 download 的完全一致
       - name: Build micro.sfx
         run: |
-          .\bin\spc build "bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib" --build-micro --without-micro-ext-test
+          .\bin\spc build "bcmath,calendar,curl,openssl,mbstring,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib" --build-micro --without-micro-ext-test
 
       - name: Upload micro.sfx Artifact
         uses: actions/upload-artifact@v4
