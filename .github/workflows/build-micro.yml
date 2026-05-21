@@ -17,7 +17,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4' # 已修改：升级运行环境到 PHP 8.4
           extensions: mbstring, curl
 
       - name: Install Composer Dependencies
@@ -25,7 +25,7 @@ jobs:
 
       - name: Fetch Sources
         run: |
-          ./bin/spc download --with-php=8.3 \
+          ./bin/spc download --with-php=8.4 \
           bcmath,calendar,curl,dom,filter,hash,iconv,json,libxml,mysqlnd,pcre,pdo,phar,random,readline,session,simplexml,spl,standard,tokenizer,xml,xmlreader,xmlwriter,zlib
 
       - name: Build micro.sfx
